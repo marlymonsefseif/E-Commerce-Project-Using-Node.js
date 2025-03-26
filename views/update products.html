@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer update</title>
+    <link href="css/all.min.css" rel="stylesheet">
+    <link href="css/bondi.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css.map" rel="stylesheet">
+</head>
+<body>
+    <div class=" mt-5 pt-5 rounded">
+        <div class="row w-100">
+            <div class="col-12 col-sm-8 col-md-6 mx-auto">
+                <div class="card shadow rounded-5">
+                    <div class="card-header bg-primary text-white text-center py-3 rounded-5">
+                        <h3 class="m-auto fw-bold fst-italic">update Form</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="updateForm">
+                            <div class="form-group">
+                                <input type="object" id="id" name="id" class="form-control my-4 py-3 fw-bold border border-dark border-2 rounded-5" placeholder="ID" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="name" name="name" class="form-control my-4 py-3 fw-bold border border-dark border-2 rounded-5" placeholder="name" >
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="description" name="description" class="form-control my-4 py-3 fw-bold border border-dark border-2 rounded-5" placeholder="description" >
+                            </div>
+                            <div class="form-group">
+                                <input type="number" id="price" name="price" class="form-control my-4 py-3 fw-bold border border-dark border-2 rounded-5" placeholder="price" >
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="category" name="category" class="form-control my-4 py-3 fw-bold border border-dark border-2 rounded-5" placeholder="category" >
+                            </div>
+                            <div class="form-group">
+                                <input type="number" id="stock_quantity" name="stock_quantity" class="form-control my-4 py-3 fw-bold border border-dark border-2 rounded-5" placeholder="stock_quantity" >
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="image_url" name="image_url" class="form-control my-4 py-3 fw-bold border border-dark border-2 rounded-5" placeholder="image_url">
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-outline-primary btn-dark btn-lg w-50 p-2 fw-bold rounded-5">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const formEl = document.getElementById("updateForm"); 
+            formEl.addEventListener("submit", async (event) => {
+                event.preventDefault();
+        
+                const productId = formEl.elements['id'].value;
+                const name = formEl.elements['name'].value;
+                const description = formEl.elements['description'].value;
+                const price = formEl.elements['price'].value;
+                const category = formEl.elements['category'].value;
+                const stock_quantity = formEl.elements['stock_quantity'].value;
+                const image_url = formEl.elements['image_url'].value;
+        
+                const updatedData = {
+                    name: name,
+                    description: description,
+                    price: price,
+                    category: category,
+                    stock_quantity: stock_quantity,
+                    image_url: image_url
+                };
+        
+                try {
+                    const response = await fetch(`http://localhost:3000/api/products/${productId}`, {
+                        method: "PATCH",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(updatedData)
+                    });
+        
+                    const responseData = await response.json();
+                    console.log(responseData);
+                    alert('Product updated successfully!');
+        
+                    if (!response.ok) {
+                        console.log("Problem updating product");
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Error updating product:', error);
+                }
+            });
+        });
+                                      
+    </script>
+</body>
+</html>
